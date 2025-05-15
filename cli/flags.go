@@ -137,7 +137,7 @@ func commandLine(ctx *cli.Context) string {
 			continue
 		}
 		switch name {
-		case "access-key", "secret-key", "influxdb":
+		case "access-key", "secret-key", "session-token", "influxdb":
 			val = "*REDACTED*"
 		}
 		s += " --" + flag.GetName() + "=" + val
@@ -163,6 +163,12 @@ var ioFlags = []cli.Flag{
 		Name:   "secret-key",
 		Usage:  "Specify secret key",
 		EnvVar: appNameUC + "_SECRET_KEY",
+		Value:  "",
+	},
+	cli.StringFlag{
+		Name:   "session-token",
+		Usage:  "Specify session token",
+		EnvVar: appNameUC + "_SESSION_TOKEN",
 		Value:  "",
 	},
 	cli.BoolFlag{

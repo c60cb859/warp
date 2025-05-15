@@ -150,10 +150,10 @@ func getClient(ctx *cli.Context, host string) (*minio.Client, error) {
 	switch strings.ToUpper(ctx.String("signature")) {
 	case "S3V4":
 		// if Signature version '4' use NewV4 directly.
-		creds = credentials.NewStaticV4(ctx.String("access-key"), ctx.String("secret-key"), "")
+		creds = credentials.NewStaticV4(ctx.String("access-key"), ctx.String("secret-key"), ctx.String("session-token"))
 	case "S3V2":
 		// if Signature version '2' use NewV2 directly.
-		creds = credentials.NewStaticV2(ctx.String("access-key"), ctx.String("secret-key"), "")
+		creds = credentials.NewStaticV2(ctx.String("access-key"), ctx.String("secret-key"), ctx.String("session-token"))
 	default:
 		fatal(probe.NewError(errors.New("unknown signature method. S3V2 and S3V4 is available")), strings.ToUpper(ctx.String("signature")))
 	}
@@ -319,7 +319,7 @@ func newAdminClient(ctx *cli.Context) *madmin.AdminClient {
 	}
 
 	cl, err := madmin.NewWithOptions(hosts[0], &madmin.Options{
-		Creds:     credentials.NewStaticV4(ctx.String("access-key"), ctx.String("secret-key"), ""),
+		Creds:     credentials.NewStaticV4(ctx.String("access-key"), ctx.String("secret-key"), ctx.String("session-token")),
 		Secure:    ctx.Bool("tls"),
 		Transport: clientTransport(ctx),
 	})
